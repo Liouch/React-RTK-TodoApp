@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { deleteTask, fetchTasks, Task } from './taskAPI';
+import { addTask, deleteTask, fetchTasks, Task } from './taskAPI';
 
 export type InitialState = {
   loading: boolean;
@@ -18,6 +18,14 @@ export const fetchTasksAsync = createAsyncThunk('task/fetchTasks', async () => {
   const response = await fetchTasks();
   return response;
 });
+
+export const addTaskAsync = createAsyncThunk(
+  'task/addTask',
+  async (task: Task) => {
+    const response = await addTask(task);
+    return response;
+  }
+);
 
 export const deleteTaskAsync = createAsyncThunk(
   'task/deleteTask',
@@ -47,7 +55,6 @@ export const taskSlice = createSlice({
         state.error = action.error.message || 'There was an error';
       })
       .addCase(deleteTaskAsync.fulfilled, (state, action) => {
-        console.log(action);
         if (typeof action.payload !== 'string') {
           const { id } = action.payload;
           const updatedTaskList = state.tasks.filter((task) => task.id !== id);
@@ -57,6 +64,16 @@ export const taskSlice = createSlice({
         }
       })
       .addCase(deleteTaskAsync.rejected, (state, action) => {
+        state.error = action.error.message || 'There was an error';
+      })
+      .addCase(addTaskAsync.fulfilled, (state, action) => {
+        if (typeof action.payload !== 'string') {
+          state.tasks.push(action.payload);
+        } else {
+          state.error = action.payload;
+        }
+      })
+      .addCase(addTaskAsync.rejected, (state, action) => {
         state.error = action.error.message || 'There was an error';
       });
   },

@@ -14,7 +14,7 @@ const TaskInfo = ({ task }: Props) => {
       <label>
         <input
           type='checkbox'
-          id={task.id.toString()}
+          id={task.id?.toString()}
           onChange={() => dispatch(deleteTaskAsync(task))}
         />
         {task.title}

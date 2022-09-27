@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export type Task = {
-  id: number;
+  id?: number;
   userId: number;
   title: string;
   completed: boolean;
@@ -16,7 +16,10 @@ export async function fetchTasks() {
 
 export async function addTask(newTask: Task) {
   const response = await axios.post(TASK_BASE_URL, newTask);
-  return response.data;
+  // to get an ID above 300
+  const newId = Math.floor(Math.random() * 101 + 300);
+  const newModidifiedTask: Task = { ...response.data, id: newId };
+  return newModidifiedTask;
 }
 
 export async function deleteTask(task: Task) {
