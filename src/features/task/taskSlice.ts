@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
 import { fetchTasks, Task } from './taskAPI';
 
 export type InitialState = {
@@ -39,5 +40,7 @@ export const taskSlice = createSlice({
       });
   },
 });
+
+export const selectTasks = (state: RootState) => state.task;
 
 export default taskSlice.reducer;
