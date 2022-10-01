@@ -1,3 +1,4 @@
+import { Box, Button, TextField } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../app/store';
@@ -14,7 +15,7 @@ const AddTask = () => {
     completed: false,
   };
 
-  const onChangeHanlder = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
 
@@ -22,23 +23,61 @@ const AddTask = () => {
     if (!inputValue) {
       alert('Please write a task first');
     } else {
-      dispatch(addTaskAsync(newTask));
-      setInputValue('');
+      dispatch(addTaskAsync(newTask))
+        .then(() => {
+          setInputValue('');
+        })
+        .catch((e) => console.log(e));
     }
   };
   return (
-    <div>
-      <input
-        type='text'
-        placeholder='Add task'
-        value={inputValue}
-        onChange={onChangeHanlder}
-        tabIndex={0}
-      />
-      <button onClick={onClickHandler} tabIndex={0}>
-        Add
-      </button>
-    </div>
+    <Box
+      sx={{
+        position: 'sticky',
+        top: '0',
+        backgroundColor: '#0078D7',
+        padding: '1rem',
+        marginBottom: '1rem',
+      }}
+    >
+      <Box
+        component='form'
+        sx={{
+          display: 'flex',
+          gap: 2,
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+        }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          onClickHandler();
+        }}
+      >
+        <TextField
+          id='oulined-required'
+          placeholder='Add a new task'
+          value={inputValue}
+          size='small'
+          required
+          onChange={onChangeHandler}
+          sx={{
+            flexGrow: '1',
+            '& .MuiInputBase-input': {
+              backgroundColor: '#fff',
+              borderRadius: 'inherit',
+            },
+          }}
+        />
+        <Button
+          variant='outlined'
+          onClick={onClickHandler}
+          type='submit'
+          sx={{ backgroundColor: '#fff' }}
+        >
+          Add
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
