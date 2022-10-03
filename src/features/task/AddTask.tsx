@@ -20,7 +20,7 @@ const AddTask = () => {
   };
 
   const onClickHandler = () => {
-    if (!inputValue) {
+    if (!inputValue || inputValue.trim() === '') {
       alert('Please write a task first');
     } else {
       dispatch(addTaskAsync(newTask))
@@ -32,22 +32,19 @@ const AddTask = () => {
   };
   return (
     <Box
-      sx={{
-        position: 'sticky',
-        top: '0',
-        backgroundColor: '#0078D7',
-        padding: '1rem',
-        marginBottom: '1rem',
-      }}
+      position='sticky'
+      top='0'
+      bgcolor='#0078D7'
+      padding='1rem'
+      marginBottom='1rem'
+      zIndex='1'
     >
       <Box
         component='form'
-        sx={{
-          display: 'flex',
-          gap: 2,
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-        }}
+        display='flex'
+        justifyContent='center'
+        flexWrap='wrap'
+        gap={2}
         onSubmit={(e) => {
           e.preventDefault();
           onClickHandler();
@@ -70,9 +67,14 @@ const AddTask = () => {
         />
         <Button
           variant='outlined'
-          onClick={onClickHandler}
           type='submit'
-          sx={{ backgroundColor: '#fff' }}
+          sx={{
+            backgroundColor: '#fff',
+            '&:hover': {
+              color: '#1976d2',
+              backgroundColor: '#fff',
+            },
+          }}
         >
           Add
         </Button>
