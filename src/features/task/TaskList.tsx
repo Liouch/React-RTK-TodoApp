@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
@@ -20,20 +21,28 @@ const TaskList = () => {
       return content;
     }
     if (task.loading) {
-      content = <div>loading</div>;
+      content = <span>Loading...</span>;
+    } else if (!task.loading && task.tasks.length === 0) {
+      content = <span>Add a new task</span>;
     } else if (!task.loading && task.tasks.length > 0) {
       const reversedTaskArray = [...task.tasks].reverse();
       content = (
-        <div>
-          {reversedTaskArray.map((task) => (
-            <TaskInfo key={task.id} task={task} />
-          ))}
-        </div>
+        <Box component='div' sx={{ paddingX: '10%' }}>
+          <div>
+            {reversedTaskArray.map((task) => (
+              <TaskInfo key={task.id} task={task} />
+            ))}
+          </div>
+        </Box>
       );
     }
     return content;
   };
-  return <div>{renderContent()}</div>;
+  return (
+    <Box display='flex' justifyContent='center'>
+      {renderContent()}
+    </Box>
+  );
 };
 
 export default TaskList;
