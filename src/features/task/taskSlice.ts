@@ -4,13 +4,19 @@ import { addTask, deleteTask, fetchTasks, Task } from './taskAPI';
 
 export type InitialState = {
   loading: boolean;
-  tasks: Task[];
+  tasks: {
+    toDo: Task[];
+    completed: Task[];
+  };
   error: string;
 };
 
 const initialState: InitialState = {
   loading: false,
-  tasks: [],
+  tasks: {
+    toDo: [],
+    completed: [],
+  },
   error: '',
 };
 
@@ -46,19 +52,26 @@ export const taskSlice = createSlice({
       })
       .addCase(fetchTasksAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.tasks = action.payload;
+        state.tasks.toDo = action.payload;
         state.error = '';
       })
       .addCase(fetchTasksAsync.rejected, (state, action) => {
         state.loading = false;
-        state.tasks = [];
+        state.tasks = {
+          toDo: [],
+          completed: [],
+        };
         state.error = action.error.message || 'There was an error';
       })
       .addCase(deleteTaskAsync.fulfilled, (state, action) => {
         if (typeof action.payload !== 'string') {
           const { id } = action.payload;
-          const updatedTaskList = state.tasks.filter((task) => task.id !== id);
-          state.tasks = updatedTaskList;
+          const updatedTaskList = state.tasks.toDo.filter(
+            (task) => task.id !== id
+          );
+          state.tasks.toDo = updatedTaskList;
+          const updatedTask = { ...action.payload, completed: true };
+          state.tasks.completed.push(updatedTask);
         } else {
           state.error = action.payload;
         }
@@ -68,7 +81,7 @@ export const taskSlice = createSlice({
       })
       .addCase(addTaskAsync.fulfilled, (state, action) => {
         if (typeof action.payload !== 'string') {
-          state.tasks.push(action.payload);
+          state.tasks.toDo.push(action.payload);
         } else {
           state.error = action.payload;
         }

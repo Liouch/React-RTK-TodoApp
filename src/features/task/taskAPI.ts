@@ -10,7 +10,9 @@ export type Task = {
 const TASK_BASE_URL = 'https://jsonplaceholder.typicode.com/todos';
 
 export async function fetchTasks() {
-  const response = await axios.get(`${TASK_BASE_URL}?completed=false`);
+  const response = await axios.get(
+    `${TASK_BASE_URL}?completed=false&_limit=10`
+  );
   return response.data;
 }
 

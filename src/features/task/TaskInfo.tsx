@@ -18,17 +18,23 @@ const TaskInfo = ({ task }: Props) => {
           padding: '0 0 0.25rem 1rem',
           borderBottom: '1px solid lightblue',
           '&:hover': {
-            backgroundColor: '#0078d7cc',
-            color: 'whitesmoke',
+            backgroundColor: `${task.completed ? null : '#0078d7cc'}`,
+            color: `${task.completed ? null : 'whitesmoke'}`,
           },
         }}
       >
         <FormControlLabel
-          sx={{ marginRight: '0' }}
+          sx={{
+            marginRight: '0',
+            textDecoration: `${task.completed ? 'line-through' : null}`,
+          }}
           control={
             <Checkbox
+              disabled={!!task.completed}
               sx={{ flexShrink: '0' }}
-              icon={<RadioButtonUnchecked />}
+              icon={
+                task.completed ? <CheckOutlined /> : <RadioButtonUnchecked />
+              }
               checkedIcon={<CheckOutlined />}
               id={task.id?.toString()}
               onChange={() => dispatch(deleteTaskAsync(task))}
