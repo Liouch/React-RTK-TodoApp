@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, useMediaQuery, useTheme } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../app/store';
@@ -12,6 +12,10 @@ type Props = {
 const AddTask = ({ inputRef }: Props) => {
   const [inputValue, setInputValue] = React.useState<string>('');
   const dispatch: AppDispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  console.log(isMobile);
 
   const newTask: Task = {
     userId: 1,
@@ -69,6 +73,7 @@ const AddTask = ({ inputRef }: Props) => {
               backgroundColor: '#fff',
               borderRadius: 'inherit',
             },
+            maxWidth: `${isMobile ? '100%' : '50%'}`,
           }}
         />
         <Button
