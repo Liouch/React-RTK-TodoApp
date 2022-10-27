@@ -8,8 +8,9 @@ import { deleteTaskAsync } from './taskSlice';
 
 type Props = {
   task: Task;
+  inputRef?: React.MutableRefObject<HTMLInputElement | null>;
 };
-const TaskInfo = ({ task }: Props) => {
+const TaskInfo = ({ task, inputRef }: Props) => {
   const dispatch: AppDispatch = useDispatch();
   return (
     <Box component='span'>
@@ -37,7 +38,11 @@ const TaskInfo = ({ task }: Props) => {
               }
               checkedIcon={<CheckOutlined />}
               id={task.id?.toString()}
-              onChange={() => dispatch(deleteTaskAsync(task))}
+              onChange={() => {
+                dispatch(deleteTaskAsync(task)).then(() =>
+                  inputRef?.current?.focus()
+                );
+              }}
             />
           }
           label={task.title}

@@ -6,9 +6,12 @@ import { AppDispatch } from '../../app/store';
 import TaskInfo from './TaskInfo';
 import { fetchTasksAsync, selectTasks } from './taskSlice';
 
+type Props = {
+  inputRef: React.MutableRefObject<HTMLInputElement | null>;
+};
 type TaskType = 'Completed' | 'Todo';
 
-const TaskList = () => {
+const TaskList = ({ inputRef }: Props) => {
   const task = useAppSelector(selectTasks);
   const dispatch: AppDispatch = useDispatch();
 
@@ -26,7 +29,7 @@ const TaskList = () => {
           return <span>Add a task!</span>;
         } else {
           return reversedTaskToDoArray.map((task) => (
-            <TaskInfo key={task.id} task={task} />
+            <TaskInfo key={task.id} task={task} inputRef={inputRef}/>
           ));
         }
       }

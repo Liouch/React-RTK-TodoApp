@@ -5,7 +5,11 @@ import { AppDispatch } from '../../app/store';
 import { Task } from './taskAPI';
 import { addTaskAsync } from './taskSlice';
 
-const AddTask = () => {
+type Props = {
+  inputRef: React.MutableRefObject<HTMLInputElement | null>;
+};
+
+const AddTask = ({ inputRef }: Props) => {
   const [inputValue, setInputValue] = React.useState<string>('');
   const dispatch: AppDispatch = useDispatch();
 
@@ -26,6 +30,7 @@ const AddTask = () => {
       dispatch(addTaskAsync(newTask))
         .then(() => {
           setInputValue('');
+          inputRef.current?.focus();
         })
         .catch((e) => console.log(e));
     }
@@ -51,6 +56,7 @@ const AddTask = () => {
         }}
       >
         <TextField
+          inputRef={inputRef}
           id='oulined-required'
           placeholder='Add a new task'
           value={inputValue}
